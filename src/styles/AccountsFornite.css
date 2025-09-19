@@ -1,0 +1,50 @@
+.dropdown-button-fornite {
+  color: white;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #211f1f85;
+  border-radius: 5px;
+  border: 1px solid #282a2f;
+  white-space: nowrap;
+  overflow: hidden;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 120px;
+  height: 42px;
+  display: flex;
+  position: relative;
+}
+
+.dropdown-button-fornite.tipocuentas {
+  min-width: 150px;
+}
+
+.dropdown-button-fornite.plataforma {
+  min-width: 130px;
+}
+
+@media (min-width: 640px) {
+  .dropdown-button-lol {
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+  }
+}
+.dropdown-button-fornite:hover {
+  background: #2a2a2a;
+  border-color: #444;
+}
+
+.dropdown-button-fornite:active {
+  background: #333;
+  border-width: 1px 1px 1px;
+  border-style: double double double;
+}
+.dropdown-button-fornite img {
+  width: 19px;
+  height: auto;
+}

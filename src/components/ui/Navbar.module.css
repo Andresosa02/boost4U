@@ -1,0 +1,140 @@
+/* Navbar.module.css */
+
+.navbar {
+  top: 64px;
+  position: relative;
+  width: 100%;
+  background-color: rgba(17, 4, 4, 1);
+  backdrop-filter: blur(7px);
+  z-index: 9;
+  padding: 1vh 1.5ch;
+  font-family: var(--font-primary);
+  border-bottom: 0.01px solid #27272aff;
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.titulo {
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+
+.logo {
+  height: 25px;
+  position: relative;
+  left: 13px;
+}
+
+.navList {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navLink {
+  display: flex;
+  position: relative;
+  gap: 0.5rem; /* Esto equivale a 8px */
+  align-items: center;
+  padding: 0.5rem 1rem; /* El padding vertical es de 8px (0.5rem) y el horizontal de 16px (1rem) */
+  height: 100%;
+  font-size: 0.875rem; /* Equivalente a 14px (text-sm) */
+  font-weight: 500; /* Equivalente a font-medium */
+  line-height: 1.5rem; /* Equivalente a 24px (leading-6) */
+  color: rgba(225, 220, 220, 1);
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition-fast);
+}
+
+.navLink:hover,
+.active {
+  --tw-gradient-from: rgba(
+    246,
+    59,
+    59,
+    0.1
+  ); /* Esto es el color azul 500 con una opacidad del 10% */
+  --tw-gradient-to: rgba(
+    246,
+    59,
+    59,
+    0
+  ); /* El degradado termina en azul transparente */
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  background-image: linear-gradient(to top, var(--tw-gradient-stops));
+  backdrop-filter: blur(4px); /* Equivalente a backdrop-blur-sm */
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.supportButton,
+.discordButton {
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition-fast);
+}
+
+.supportButton {
+  background-color: #3b3b54;
+  color: var(--color-text-primary);
+}
+.discordButton {
+  background-color: #5d9cec;
+  color: var(--color-text-primary);
+}
+
+.supportButton:hover,
+.discordButton:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* --- Menú Hamburguesa para Móvil --- */
+.mobileToggle {
+  display: none; /* Oculto por defecto */
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .navLinks {
+    display: none; /* Ocultar enlaces y botones en móvil */
+  }
+
+  .mobileToggle {
+    display: block; /* Mostrar el botón de hamburguesa */
+  }
+
+  /* Aquí agregarías los estilos para el menú desplegable en móvil,
+     similar a como se hizo en app.css */
+}

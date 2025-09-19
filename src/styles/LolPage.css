@@ -1,0 +1,104 @@
+/* LolPage.css */
+.lol-page {
+  min-height: 100vh;
+  color: #cdbe91;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-content {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Hero Section */
+.hero-section-lol {
+  padding: 7rem 0;
+  text-align: left;
+}
+
+.logo-container {
+  margin-bottom: 1.5rem;
+}
+
+.lol-logo {
+  width: 60px;
+  height: 60px;
+  filter: brightness(1.2);
+}
+
+/* Services Grid */
+.services-grid-lol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.service-link-lol {
+  text-decoration: none;
+  color: inherit;
+}
+
+.service-card-lol {
+  background: linear-gradient(135deg, #1e2328 0%, #3c3c41 100%);
+  border: 1px solid #463714;
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.service-card-lol:hover {
+  transform: translateY(-5px);
+  border-color: #c8aa6e;
+  box-shadow: 0 8px 25px rgba(200, 170, 110, 0.2);
+}
+
+.new-badge-lol {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+  background: linear-gradient(135deg, #c89b3c 0%, #f0e6d2 100%);
+  color: #0a1428;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.service-icon-lol {
+  margin-bottom: 1.5rem;
+}
+
+.icon-wrapper-lol {
+  width: 80px;
+  height: 50px;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.service-content-lol h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.service-content-lol p {
+  font-size: 0.95rem;
+  color: #b0b0b0;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Accounts Grid */
+.accounts-grid {
+}

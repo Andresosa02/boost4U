@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: rgba(7, 1, 1, 1);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+.fondo-cuentas {
+  background-image: linear-gradient(
+      rgba(15, 1, 1, 0.88),
+      rgba(7, 1, 1, 1),
+      rgba(7, 1, 1, 1)
+    ),
+    url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Samira_30.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: relative;
+  color: #ffffff;
+  overflow-x: hidden;
+  font-family: "Poppins", sans-serif;
+}
