@@ -10,6 +10,7 @@ import React, {
 import { Link, useLocation, useNavigate } from "react-router-dom"; // Importa useNavigate
 import AuthModal from "./Login";
 import supabase from "../supabaseClient";
+import User from "../components/user";
 import "../App.css";
 
 export const Header = () => {
@@ -294,6 +295,20 @@ export const Header = () => {
 
   // --- Estados para el modal de autenticación ---
   const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
+  const [isLoginButtonOpen, setIsLoginButtonOpen] = useState(false);
+  const [isUserOpen, setIsUserOpen] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        setIsLoginButtonOpen(true);
+        setIsUserOpen(false);
+      } else {
+        setIsLoginButtonOpen(false);
+        setIsUserOpen(true);
+      }
+    });
+  }, []);
 
   const showAuthModal = useCallback(() => {
     setIsAuthModalVisible(true);
@@ -304,6 +319,8 @@ export const Header = () => {
     setIsAuthModalVisible(false);
     document.body.style.overflow = "auto";
   }, []);
+
+  // ------------------------------
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -650,14 +667,26 @@ export const Header = () => {
           </li>
         </ul>
       </nav>
+      <div>
+        {isUserOpen && (
+          <div>
+            <div>
+              <User />
+            </div>
+          </div>
+        )}
+        {isLoginButtonOpen && (
+          <div>
+            <div className="auth-buttons">
+              <button onClick={showAuthModal} className="login-button">
+                Sign up
+              </button>
+            </div>
 
-      <div className="auth-buttons">
-        <button onClick={showAuthModal} className="login-button">
-          Iniciar Sesión
-        </button>
+            <AuthModal isVisible={isAuthModalVisible} onClose={hideAuthModal} />
+          </div>
+        )}
       </div>
-
-      <AuthModal isVisible={isAuthModalVisible} onClose={hideAuthModal} />
     </header>
   );
 };

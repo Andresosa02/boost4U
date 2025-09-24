@@ -1,7 +1,7 @@
 // src/App.jsx
 
 import React from "react";
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from "./pages/index.jsx";
 import LolPage from "./pages/lolpage.jsx";
 import BoostingLol from "./pages/boostinglol.jsx";
@@ -11,12 +11,13 @@ import AccountsPageValorant from "./pages/accountsValorant.jsx";
 import FortnitePage from "./pages/fortnitepage.jsx";
 import ValorantPage from "./pages/valorantpage.jsx";
 import { Header } from "./components/Header.jsx";
+import Settings from "./pages/dashboard/settings.jsx";
 
 import "./App.css";
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Header />
 
       <Routes>
@@ -29,8 +30,9 @@ function App() {
         <Route path="/fortnite" element={<FortnitePage />} />
         <Route path="/valorant" element={<ValorantPage />} />
         <Route path="/cuentasValorant" element={<AccountsPageValorant />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
