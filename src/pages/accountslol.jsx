@@ -58,7 +58,7 @@ function AccountsPagelol() {
     };
 
     fetchAccounts();
-
+    console.log(accounts);
     return () => {
       document.body.classList.remove("fondo-cuentas");
     };

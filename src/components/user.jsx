@@ -1,47 +1,64 @@
 import { Link } from "react-router-dom";
 import supabase from "../supabaseClient";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { getUserRole } from "../utils/roles";
 import "../styles/Dashboard.css";
 
 export const User = () => {
-  const [user, setUser] = useState(null);
+  const [username, setUsername] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  const menuRef = useRef(null);
 
   useEffect(() => {
     // Obtener usuario actual
     const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) {
-        setUser(user);
-        // La foto de perfil está en user_metadata
-        setProfilePicture(
-          user.user_metadata?.avatar_url || user.user_metadata?.picture
-        );
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+          const { data, error, status } = await supabase
+            .from("profiles")
+            .select(`full_name, username, avatar_url`)
+            .eq("id", user.id)
+            .single();
+
+          if (error && status !== 406) {
+            throw error;
+          }
+
+          if (data) {
+            setUsername(data.username || data.full_name);
+            setProfilePicture(data.avatar_url);
+          }
+        }
+      } catch (error) {
+        console.error("Error al obtener el perfil:", error.message);
       }
     };
 
     getUser();
 
-    // Escuchar cambios de autenticación
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-        setProfilePicture(
-          session.user.user_metadata?.avatar_url ||
-            session.user.user_metadata?.picture
-        );
-      } else {
-        setUser(null);
-        setProfilePicture(null);
-      }
-    });
+    // Obtener rol del usuario
+    const getRole = async () => {
+      // Verificar si las tablas existen
 
-    return () => subscription.unsubscribe();
+      const role = await getUserRole();
+      setUserRole(role);
+    };
+    getRole();
+
+    // Cerrar el menú al hacer clic fuera
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   const cerrarSesion = async () => {
     try {
@@ -53,19 +70,71 @@ export const User = () => {
   };
 
   return (
-    <div>
-      <div onClick={() => setIsOpen(!isOpen)} className="fotoPerfil">
-        <img src={profilePicture} alt="Foto de perfil" className="logo" />
-      </div>
+    <div className="user-dropdown" ref={menuRef}>
+      <button onClick={() => setIsOpen(!isOpen)} className="user-trigger">
+        <img
+          src={profilePicture}
+          alt="Foto de perfil"
+          className="user-avatar"
+        />
+      </button>
       {isOpen && (
-        <div>
-          {user?.user_metadata?.full_name || user?.user_metadata?.name}
-          <Link to="/">
-            <button onClick={cerrarSesion}>salir</button>
-          </Link>
-          <Link to="/settings">
-            <button>settings</button>
-          </Link>
+        <div className="user-menu">
+          <div className="user-card">
+            <div className="">
+              <img
+                src={profilePicture}
+                alt="Foto de perfil"
+                className="user-initial"
+              />
+            </div>
+            <div className="user-info">
+              <div className="user-name">{username || "Usuario"}</div>
+            </div>
+          </div>
+          <div className="user-menu-items">
+            <Link
+              to="/orders"
+              className="user-menu-item"
+              onClick={() => setIsOpen(false)}
+            >
+              <span>Dashboard</span>
+            </Link>
+            <Link
+              to="/library"
+              className="user-menu-item"
+              onClick={() => setIsOpen(false)}
+            >
+              <span>Library</span>
+            </Link>
+            <Link
+              to="/settings"
+              className="user-menu-item"
+              onClick={() => setIsOpen(false)}
+            >
+              <span>Settings</span>
+            </Link>
+            {userRole === "admin" && (
+              <Link
+                to="/admin"
+                className="user-menu-item"
+                onClick={() => setIsOpen(false)}
+              >
+                <span>Admin Panel</span>
+              </Link>
+            )}
+          </div>
+          <div className="user-menu-footer">
+            <Link to="/">
+              <button
+                className="user-menu-item danger"
+                onClick={cerrarSesion}
+                type="button"
+              >
+                <span>Logout</span>
+              </button>
+            </Link>
+          </div>
         </div>
       )}
     </div>

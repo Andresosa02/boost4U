@@ -65,7 +65,12 @@ export const Settings = () => {
       }
       alert("¡Perfil actualizado con éxito!");
     } catch (error) {
-      alert(error.message);
+      if (error.code === "23505") {
+        // Error de unicidad: el username ya existe
+        alert("¡Ese nombre de usuario ya está en uso! Por favor, elige otro.");
+      } else {
+        alert(error.message);
+      }
     } finally {
       setLoading(false);
     }

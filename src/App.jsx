@@ -12,6 +12,10 @@ import FortnitePage from "./pages/fortnitepage.jsx";
 import ValorantPage from "./pages/valorantpage.jsx";
 import { Header } from "./components/Header.jsx";
 import Settings from "./pages/dashboard/settings.jsx";
+import Orders from "./pages/dashboard/orders.jsx";
+import Library from "./pages/dashboard/library.jsx";
+import Admin from "./pages/dashboard/admin.jsx";
+import Sales from "./pages/dashboard/sales.jsx";
 
 import "./App.css";
 
@@ -31,6 +35,10 @@ function App() {
         <Route path="/valorant" element={<ValorantPage />} />
         <Route path="/cuentasValorant" element={<AccountsPageValorant />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/library" element={<Library />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/sales" element={<Sales />} />
       </Routes>
     </BrowserRouter>
   );
