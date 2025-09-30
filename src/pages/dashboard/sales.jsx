@@ -87,8 +87,15 @@ export const Sales = () => {
 
       if (!seller) throw new Error("No eres un vendedor autorizado");
 
+      // Limpiar datos temporales antes de enviar
+      const cleanData = { ...publishData };
+      delete cleanData.rankTier;
+      delete cleanData.rankDivision;
+      delete cleanData.flexRankTier;
+      delete cleanData.flexRankDivision;
+
       const accountData = {
-        ...publishData,
+        ...cleanData,
         seller_id: seller.id,
         published_at: new Date().toISOString(),
       };
@@ -245,23 +252,7 @@ export const Sales = () => {
           <h2>Publicar Cuenta de League of Legends</h2>
           <form onSubmit={handlePublishSubmit}>
             <div className="form-group">
-              <label htmlFor="username">Description *</label>
-              <input
-                type="text"
-                id="username"
-                value={publishData.description || ""}
-                onChange={(e) =>
-                  setPublishData({
-                    ...publishData,
-                    description: e.target.value,
-                  })
-                }
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="server">Servidor *</label>
+              <label htmlFor="region">Servidor *</label>
               <select
                 id="region"
                 value={publishData.region || ""}
@@ -272,54 +263,89 @@ export const Sales = () => {
               >
                 <option value="">Seleccionar servidor</option>
                 <option value="EUW">EUW</option>
-                <option value="EUNE">EUNE</option>
-                <option value="NA">NA</option>
-                <option value="BR">BR</option>
                 <option value="LAN">LAN</option>
                 <option value="LAS">LAS</option>
                 <option value="OCE">OCE</option>
-                <option value="RU">RU</option>
-                <option value="TR">TR</option>
-                <option value="JP">JP</option>
-                <option value="KR">KR</option>
               </select>
             </div>
 
             <div className="form-group">
               <label htmlFor="rank">Rango *</label>
-              <select
-                id="rank"
-                value={publishData.rank || ""}
-                onChange={(e) =>
-                  setPublishData({ ...publishData, rank: e.target.value })
-                }
-                required
-              >
-                <option value="">Seleccionar rango</option>
-                <option value="Iron">Iron</option>
-                <option value="Bronze">Bronze</option>
-                <option value="Silver">Silver</option>
-                <option value="Gold">Gold</option>
-                <option value="Platinum">Platinum</option>
-                <option value="Diamond">Diamond</option>
-                <option value="Master">Master</option>
-                <option value="Grandmaster">Grandmaster</option>
-                <option value="Challenger">Challenger</option>
-              </select>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <select
+                  id="rank"
+                  value={publishData.rankTier || ""}
+                  onChange={(e) => {
+                    const tier = e.target.value;
+                    setPublishData({
+                      ...publishData,
+                      rankTier: tier,
+                      rank:
+                        tier === "Master" ||
+                        tier === "Grandmaster" ||
+                        tier === "Challenger"
+                          ? tier
+                          : `${tier} ${publishData.rankDivision || "I"}`,
+                    });
+                  }}
+                  required
+                >
+                  <option value="">Seleccionar rango</option>
+                  <option value="Iron">Iron</option>
+                  <option value="Bronze">Bronze</option>
+                  <option value="Silver">Silver</option>
+                  <option value="Gold">Gold</option>
+                  <option value="Platinum">Platinum</option>
+                  <option value="Emerald">Emerald</option>
+                  <option value="Diamond">Diamond</option>
+                  <option value="Master">Master</option>
+                  <option value="Grandmaster">Grandmaster</option>
+                  <option value="Challenger">Challenger</option>
+                </select>
+                <select
+                  id="rankDivision"
+                  value={publishData.rankDivision || ""}
+                  onChange={(e) => {
+                    const division = e.target.value;
+                    setPublishData({
+                      ...publishData,
+                      rankDivision: division,
+                      rank:
+                        publishData.rankTier === "Master" ||
+                        publishData.rankTier === "Grandmaster" ||
+                        publishData.rankTier === "Challenger"
+                          ? publishData.rankTier
+                          : `${publishData.rankTier} ${division}`,
+                    });
+                  }}
+                  disabled={
+                    publishData.rankTier === "Master" ||
+                    publishData.rankTier === "Grandmaster" ||
+                    publishData.rankTier === "Challenger"
+                  }
+                >
+                  <option value="">División</option>
+                  <option value="I">I</option>
+                  <option value="II">II</option>
+                  <option value="III">III</option>
+                  <option value="IV">IV</option>
+                </select>
+              </div>
             </div>
 
             <div className="form-group">
-              <label htmlFor="price">Precio *</label>
-              <input
-                type="number"
-                id="price"
-                value={publishData.price || ""}
+              <label htmlFor="description">Descripción *</label>
+              <textarea
+                id="description"
+                value={publishData.description || ""}
                 onChange={(e) =>
-                  setPublishData({ ...publishData, price: e.target.value })
+                  setPublishData({
+                    ...publishData,
+                    description: e.target.value,
+                  })
                 }
                 required
-                min="0"
-                step="0.01"
+                rows="3"
               />
             </div>
 
@@ -349,30 +375,199 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-actions">
-              <button type="button" onClick={() => setShowPublishForm(false)}>
-                Cancelar
-              </button>
-              <button type="submit">Publicar Cuenta</button>
-            </div>
-          </form>
-        </div>
-      );
-    }
-
-    if (selectedGame === "fortnite") {
-      return (
-        <div className="publish-form">
-          <h2>Publicar Cuenta de Fortnite</h2>
-          <form onSubmit={handlePublishSubmit}>
             <div className="form-group">
-              <label htmlFor="username">Nombre de usuario *</label>
+              <label htmlFor="level">Nivel</label>
+              <input
+                type="number"
+                id="level"
+                value={publishData.level || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, level: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="be">Blue Essence</label>
+              <input
+                type="number"
+                id="be"
+                value={publishData.be || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, be: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="rp">Riot Points</label>
+              <input
+                type="number"
+                id="rp"
+                value={publishData.rp || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, rp: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="price">Precio *</label>
+              <input
+                type="number"
+                id="price"
+                value={publishData.price || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, price: e.target.value })
+                }
+                required
+                min="0"
+                step="0.01"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={publishData.isFeatured || false}
+                  onChange={(e) =>
+                    setPublishData({
+                      ...publishData,
+                      isFeatured: e.target.checked,
+                    })
+                  }
+                />
+                Featured
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={publishData.instantDelivery || false}
+                  onChange={(e) =>
+                    setPublishData({
+                      ...publishData,
+                      instantDelivery: e.target.checked,
+                    })
+                  }
+                />
+                Instant Delivery
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="roles">Roles</label>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                {["ADC", "TOP", "MID", "SUP", "JG"].map((role) => (
+                  <label
+                    key={role}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={publishData.roles?.includes(role) || false}
+                      onChange={(e) => {
+                        const currentRoles = publishData.roles || [];
+                        if (e.target.checked) {
+                          setPublishData({
+                            ...publishData,
+                            roles: [...currentRoles, role],
+                          });
+                        } else {
+                          setPublishData({
+                            ...publishData,
+                            roles: currentRoles.filter((r) => r !== role),
+                          });
+                        }
+                      }}
+                    />
+                    {role}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="flexRank">Flex Rank</label>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <select
+                  id="flexRankTier"
+                  value={publishData.flexRankTier || ""}
+                  onChange={(e) => {
+                    const tier = e.target.value;
+                    setPublishData({
+                      ...publishData,
+                      flexRankTier: tier,
+                      flexRank:
+                        tier === "Master" ||
+                        tier === "Grandmaster" ||
+                        tier === "Challenger"
+                          ? tier
+                          : `${tier} ${publishData.flexRankDivision || "I"}`,
+                    });
+                  }}
+                >
+                  <option value="">Seleccionar rango</option>
+                  <option value="Iron">Iron</option>
+                  <option value="Bronze">Bronze</option>
+                  <option value="Silver">Silver</option>
+                  <option value="Gold">Gold</option>
+                  <option value="Platinum">Platinum</option>
+                  <option value="Emerald">Emerald</option>
+                  <option value="Diamond">Diamond</option>
+                  <option value="Master">Master</option>
+                  <option value="Grandmaster">Grandmaster</option>
+                  <option value="Challenger">Challenger</option>
+                </select>
+                <select
+                  id="flexRankDivision"
+                  value={publishData.flexRankDivision || ""}
+                  onChange={(e) => {
+                    const division = e.target.value;
+                    setPublishData({
+                      ...publishData,
+                      flexRankDivision: division,
+                      flexRank:
+                        publishData.flexRankTier === "Master" ||
+                        publishData.flexRankTier === "Grandmaster" ||
+                        publishData.flexRankTier === "Challenger"
+                          ? publishData.flexRankTier
+                          : `${publishData.flexRankTier} ${division}`,
+                    });
+                  }}
+                  disabled={
+                    publishData.flexRankTier === "Master" ||
+                    publishData.flexRankTier === "Grandmaster" ||
+                    publishData.flexRankTier === "Challenger"
+                  }
+                >
+                  <option value="">División</option>
+                  <option value="I">I</option>
+                  <option value="II">II</option>
+                  <option value="III">III</option>
+                  <option value="IV">IV</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="user">Usuario *</label>
               <input
                 type="text"
-                id="username"
-                value={publishData.username || ""}
+                id="user"
+                value={publishData.user || ""}
                 onChange={(e) =>
-                  setPublishData({ ...publishData, username: e.target.value })
+                  setPublishData({ ...publishData, user: e.target.value })
                 }
                 required
               />
@@ -391,59 +586,58 @@ export const Sales = () => {
               />
             </div>
 
+            <div className="form-actions">
+              <button
+                type="button"
+                onClick={() => (setShowPublishForm(false), setSelectedGame(""))}
+              >
+                Cancelar
+              </button>
+              <button type="submit">Publicar Cuenta</button>
+            </div>
+          </form>
+        </div>
+      );
+    }
+
+    if (selectedGame === "fortnite") {
+      return (
+        <div className="publish-form">
+          <h2>Publicar Cuenta de Fortnite</h2>
+          <form onSubmit={handlePublishSubmit}>
             <div className="form-group">
-              <label htmlFor="platform">Plataforma *</label>
+              <label htmlFor="entorno">Plataforma *</label>
               <select
-                id="platform"
-                value={publishData.platform || ""}
+                id="entorno"
+                value={publishData.entorno || ""}
                 onChange={(e) =>
-                  setPublishData({ ...publishData, platform: e.target.value })
+                  setPublishData({ ...publishData, entorno: e.target.value })
                 }
                 required
               >
                 <option value="">Seleccionar plataforma</option>
                 <option value="PC">PC</option>
-                <option value="PlayStation">PlayStation</option>
                 <option value="Xbox">Xbox</option>
-                <option value="Nintendo Switch">Nintendo Switch</option>
-                <option value="Mobile">Mobile</option>
+                <option value="PlayStation">PlayStation</option>
+                <option value="Android">Android</option>
+                <option value="IOS">IOS</option>
+                <option value="Switch">Switch</option>
               </select>
             </div>
 
             <div className="form-group">
-              <label htmlFor="account_type">Tipo de cuenta *</label>
-              <select
-                id="account_type"
-                value={publishData.account_type || ""}
+              <label htmlFor="description">Descripción *</label>
+              <textarea
+                id="description"
+                value={publishData.description || ""}
                 onChange={(e) =>
                   setPublishData({
                     ...publishData,
-                    account_type: e.target.value,
+                    description: e.target.value,
                   })
                 }
                 required
-              >
-                <option value="">Seleccionar tipo</option>
-                <option value="Starter">Starter</option>
-                <option value="Standard">Standard</option>
-                <option value="Deluxe">Deluxe</option>
-                <option value="Super Deluxe">Super Deluxe</option>
-                <option value="Ultimate">Ultimate</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="price">Precio *</label>
-              <input
-                type="number"
-                id="price"
-                value={publishData.price || ""}
-                onChange={(e) =>
-                  setPublishData({ ...publishData, price: e.target.value })
-                }
-                required
-                min="0"
-                step="0.01"
+                rows="3"
               />
             </div>
 
@@ -461,39 +655,196 @@ export const Sales = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="vbucks">V-Bucks</label>
+              <label htmlFor="V_Bucks">V-Bucks</label>
               <input
                 type="number"
-                id="vbucks"
-                value={publishData.vbucks || ""}
+                id="V_Bucks"
+                value={publishData.V_Bucks || ""}
                 onChange={(e) =>
-                  setPublishData({ ...publishData, vbucks: e.target.value })
+                  setPublishData({ ...publishData, V_Bucks: e.target.value })
                 }
                 min="0"
               />
             </div>
 
-            <div className="form-actions">
-              <button type="button" onClick={() => setShowPublishForm(false)}>
-                Cancelar
-              </button>
-              <button type="submit">Publicar Cuenta</button>
-            </div>
-          </form>
-        </div>
-      );
-    }
-
-    if (selectedGame === "valorant") {
-      return (
-        <div className="publish-form">
-          <h2>Publicar Cuenta de Valorant</h2>
-          <form onSubmit={handlePublishSubmit}>
             <div className="form-group">
-              <label htmlFor="username">Nombre de usuario *</label>
+              <label htmlFor="emotes">Emotes</label>
+              <input
+                type="number"
+                id="emotes"
+                value={publishData.emotes || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, emotes: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="pickaxes">Pickaxes</label>
+              <input
+                type="number"
+                id="pickaxes"
+                value={publishData.pickaxes || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, pickaxes: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="backBlings">Backblings</label>
+              <input
+                type="number"
+                id="backBlings"
+                value={publishData.backBlings || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, backBlings: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="gliders">Gliders</label>
+              <input
+                type="number"
+                id="gliders"
+                value={publishData.gliders || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, gliders: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="wraps">Wraps</label>
+              <input
+                type="number"
+                id="wraps"
+                value={publishData.wraps || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, wraps: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="loadings">Loadings</label>
+              <input
+                type="number"
+                id="loadings"
+                value={publishData.loadings || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, loadings: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="sprays">Sprays</label>
+              <input
+                type="number"
+                id="sprays"
+                value={publishData.sprays || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, sprays: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="level">Nivel</label>
+              <input
+                type="number"
+                id="level"
+                value={publishData.level || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, level: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={publishData.isFeatured || false}
+                  onChange={(e) =>
+                    setPublishData({
+                      ...publishData,
+                      isFeatured: e.target.checked,
+                    })
+                  }
+                />
+                Featured
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={publishData.instantDeli || false}
+                  onChange={(e) =>
+                    setPublishData({
+                      ...publishData,
+                      instantDeli: e.target.checked,
+                    })
+                  }
+                />
+                Instant Delivery
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="accountType">Account Type</label>
+              <select
+                id="accountType"
+                value={publishData.accountType || ""}
+                onChange={(e) =>
+                  setPublishData({
+                    ...publishData,
+                    accountType: e.target.value,
+                  })
+                }
+              >
+                <option value="">Seleccionar tipo</option>
+                <option value="OG Account">OG Account</option>
+                <option value="Original Email">Original Email</option>
+                <option value="Stacked">Stacked</option>
+                <option value="Save The World">Save The World</option>
+                <option value="Battle Royale">Battle Royale</option>
+                <option value="The Crew">The Crew</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="price">Precio *</label>
+              <input
+                type="number"
+                id="price"
+                value={publishData.price || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, price: e.target.value })
+                }
+                required
+                min="0"
+                step="0.01"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="user">Usuario *</label>
               <input
                 type="text"
-                id="username"
+                id="user"
                 value={publishData.username || ""}
                 onChange={(e) =>
                   setPublishData({ ...publishData, username: e.target.value })
@@ -515,61 +866,113 @@ export const Sales = () => {
               />
             </div>
 
+            <div className="form-actions">
+              <button
+                type="button"
+                onClick={() => (setShowPublishForm(false), setSelectedGame(""))}
+              >
+                Cancelar
+              </button>
+              <button type="submit">Publicar Cuenta</button>
+            </div>
+          </form>
+        </div>
+      );
+    }
+
+    if (selectedGame === "valorant") {
+      return (
+        <div className="publish-form">
+          <h2>Publicar Cuenta de Valorant</h2>
+          <form onSubmit={handlePublishSubmit}>
             <div className="form-group">
-              <label htmlFor="server">Servidor *</label>
+              <label htmlFor="region">Servidor *</label>
               <select
-                id="server"
-                value={publishData.server || ""}
+                id="region"
+                value={publishData.region || ""}
                 onChange={(e) =>
-                  setPublishData({ ...publishData, server: e.target.value })
+                  setPublishData({ ...publishData, region: e.target.value })
                 }
                 required
               >
                 <option value="">Seleccionar servidor</option>
-                <option value="NA">NA</option>
                 <option value="EU">EU</option>
-                <option value="AP">AP</option>
-                <option value="KR">KR</option>
-                <option value="BR">BR</option>
+                <option value="NA">NA</option>
                 <option value="LATAM">LATAM</option>
               </select>
             </div>
 
             <div className="form-group">
               <label htmlFor="rank">Rango *</label>
-              <select
-                id="rank"
-                value={publishData.rank || ""}
-                onChange={(e) =>
-                  setPublishData({ ...publishData, rank: e.target.value })
-                }
-                required
-              >
-                <option value="">Seleccionar rango</option>
-                <option value="Iron">Iron</option>
-                <option value="Bronze">Bronze</option>
-                <option value="Silver">Silver</option>
-                <option value="Gold">Gold</option>
-                <option value="Platinum">Platinum</option>
-                <option value="Diamond">Diamond</option>
-                <option value="Ascendant">Ascendant</option>
-                <option value="Immortal">Immortal</option>
-                <option value="Radiant">Radiant</option>
-              </select>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <select
+                  id="rank"
+                  value={publishData.rankTier || ""}
+                  onChange={(e) => {
+                    const tier = e.target.value;
+                    setPublishData({
+                      ...publishData,
+                      rankTier: tier,
+                      rank:
+                        tier === "Immortal" || tier === "Radiant"
+                          ? tier
+                          : `${tier} ${publishData.rankDivision || "1"}`,
+                    });
+                  }}
+                  required
+                >
+                  <option value="">Seleccionar rango</option>
+                  <option value="Iron">Iron</option>
+                  <option value="Bronze">Bronze</option>
+                  <option value="Silver">Silver</option>
+                  <option value="Gold">Gold</option>
+                  <option value="Platinum">Platinum</option>
+                  <option value="Diamond">Diamond</option>
+                  <option value="Ascendant">Ascendant</option>
+                  <option value="Immortal">Immortal</option>
+                  <option value="Radiant">Radiant</option>
+                </select>
+                <select
+                  id="rankDivision"
+                  value={publishData.rankDivision || ""}
+                  onChange={(e) => {
+                    const division = e.target.value;
+                    setPublishData({
+                      ...publishData,
+                      rankDivision: division,
+                      rank:
+                        publishData.rankTier === "Immortal" ||
+                        publishData.rankTier === "Radiant"
+                          ? publishData.rankTier
+                          : `${publishData.rankTier} ${division}`,
+                    });
+                  }}
+                  disabled={
+                    publishData.rankTier === "Immortal" ||
+                    publishData.rankTier === "Radiant"
+                  }
+                >
+                  <option value="">División</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
             </div>
 
             <div className="form-group">
-              <label htmlFor="price">Precio *</label>
-              <input
-                type="number"
-                id="price"
-                value={publishData.price || ""}
+              <label htmlFor="description">Descripción *</label>
+              <textarea
+                id="description"
+                value={publishData.description || ""}
                 onChange={(e) =>
-                  setPublishData({ ...publishData, price: e.target.value })
+                  setPublishData({
+                    ...publishData,
+                    description: e.target.value,
+                  })
                 }
                 required
-                min="0"
-                step="0.01"
+                rows="3"
               />
             </div>
 
@@ -600,6 +1003,19 @@ export const Sales = () => {
             </div>
 
             <div className="form-group">
+              <label htmlFor="level">Nivel</label>
+              <input
+                type="number"
+                id="level"
+                value={publishData.level || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, level: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
               <label htmlFor="vp">Valorant Points</label>
               <input
                 type="number"
@@ -612,8 +1028,183 @@ export const Sales = () => {
               />
             </div>
 
+            <div className="form-group">
+              <label htmlFor="rp">Riot Points</label>
+              <input
+                type="number"
+                id="rp"
+                value={publishData.rp || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, rp: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="plataform">Plataforma</label>
+              <select
+                id="plataform"
+                value={publishData.plataform || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, plataform: e.target.value })
+                }
+              >
+                <option value="">Seleccionar plataforma</option>
+                <option value="PC">PC</option>
+                <option value="Xbox">Xbox</option>
+                <option value="PlayStation">PlayStation</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="rankedWinrate">Ranked Winrate</label>
+              <input
+                type="number"
+                id="rankedWinrate"
+                value={publishData.rankedWinrate || ""}
+                onChange={(e) => {
+                  const value = Math.min(
+                    100,
+                    Math.max(0, parseInt(e.target.value) || 0)
+                  );
+                  setPublishData({ ...publishData, rankedWinrate: value });
+                }}
+                min="0"
+                max="100"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="buddies">Buddies</label>
+              <input
+                type="number"
+                id="buddies"
+                value={publishData.buddies || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, buddies: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="sprays">Sprays</label>
+              <input
+                type="number"
+                id="sprays"
+                value={publishData.sprays || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, sprays: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="cards">Cards</label>
+              <input
+                type="number"
+                id="cards"
+                value={publishData.cards || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, cards: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="titles">Titles</label>
+              <input
+                type="number"
+                id="titles"
+                value={publishData.titles || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, titles: e.target.value })
+                }
+                min="0"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="price">Precio *</label>
+              <input
+                type="number"
+                id="price"
+                value={publishData.price || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, price: e.target.value })
+                }
+                required
+                min="0"
+                step="0.01"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={publishData.isFeatured || false}
+                  onChange={(e) =>
+                    setPublishData({
+                      ...publishData,
+                      isFeatured: e.target.checked,
+                    })
+                  }
+                />
+                Featured
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={publishData.instantDelivery || false}
+                  onChange={(e) =>
+                    setPublishData({
+                      ...publishData,
+                      instantDelivery: e.target.checked,
+                    })
+                  }
+                />
+                Instant Delivery
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="user">Usuario *</label>
+              <input
+                type="text"
+                id="user"
+                value={publishData.username || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, username: e.target.value })
+                }
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Contraseña *</label>
+              <input
+                type="password"
+                id="password"
+                value={publishData.password || ""}
+                onChange={(e) =>
+                  setPublishData({ ...publishData, password: e.target.value })
+                }
+                required
+              />
+            </div>
+
             <div className="form-actions">
-              <button type="button" onClick={() => setShowPublishForm(false)}>
+              <button
+                type="button"
+                onClick={() => (setShowPublishForm(false), setSelectedGame(""))}
+              >
                 Cancelar
               </button>
               <button type="submit">Publicar Cuenta</button>

@@ -8,6 +8,17 @@ export const NavbarUsers = () => {
   const [user, setUser] = useState(null);
   const [profilePicture, setProfilePicture] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const getAvatarUrl = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http")) return url;
+    const storagePath = url.startsWith("Avatars/")
+      ? url.replace("Avatars/", "")
+      : url;
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("Avatars").getPublicUrl(storagePath);
+    return publicUrl;
+  };
   useEffect(() => {
     // Obtener usuario actual
     const getUser = async () => {
@@ -29,7 +40,7 @@ export const NavbarUsers = () => {
 
           if (data) {
             setUser(data.username);
-            setProfilePicture(data.avatar_url);
+            setProfilePicture(getAvatarUrl(data.avatar_url));
           }
         }
       } catch (error) {
@@ -58,9 +69,13 @@ export const NavbarUsers = () => {
         <div className={styles.navLeft}>
           <Link to="/orders">
             <img
-              src={profilePicture}
+              src={profilePicture || "https://placehold.co/64x64?text=User"}
               alt="Foto de perfil"
               className={styles.logo}
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                e.currentTarget.src = "https://placehold.co/64x64?text=User";
+              }}
             />
           </Link>
           <Link className={styles.titulo} to="/orders">
@@ -72,11 +87,6 @@ export const NavbarUsers = () => {
             <li className={styles.navItem}>
               <Link to="/orders" className={styles.navLink}>
                 Orders
-              </Link>
-            </li>
-            <li className={styles.navItem}>
-              <Link to="/library" className={`${styles.navLink} `}>
-                Library
               </Link>
             </li>
             <li className={styles.navItem}>

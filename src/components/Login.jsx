@@ -10,6 +10,7 @@ export const AuthModal = ({ isVisible, onClose }) => {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [isMouseDownInside, setIsMouseDownInside] = useState(false);
   const currentUrl = window.location.origin + window.location.pathname;
   useEffect(() => {
     if (isVisible) {
@@ -21,6 +22,11 @@ export const AuthModal = ({ isVisible, onClose }) => {
   }, [isVisible]);
 
   if (!isVisible) return null;
+
+  const generateDefaultUsername = () => {
+    const randomNumber = Math.floor(Math.random() * 9999 + 10);
+    return `user${randomNumber}`;
+  };
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -45,12 +51,15 @@ export const AuthModal = ({ isVisible, onClose }) => {
         setMessage("¡Inicio de sesión exitoso!");
         setTimeout(() => onClose(), 1500);
       } else {
+        // Generar username por defecto si no se proporciona uno
+        const finalUsername = username.trim() || generateDefaultUsername();
+
         const { error } = await supabase.auth.signUp({
           email,
           password: password || "temp-password", // Añade un campo de contraseña real
           options: {
             data: {
-              username: username,
+              full_name: finalUsername,
             },
           },
         });
@@ -86,14 +95,37 @@ export const AuthModal = ({ isVisible, onClose }) => {
   };
 
   const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) {
+    // Solo cerrar si el clic fue directamente en el overlay y no se arrastró desde dentro
+    if (e.target === e.currentTarget && !isMouseDownInside) {
       onClose();
     }
   };
 
+  const handleMouseDown = () => {
+    // Marcar que el mouse se presionó dentro del contenedor
+    setIsMouseDownInside(true);
+  };
+
+  const handleMouseUp = () => {
+    // Resetear el estado después de un breve delay
+    setTimeout(() => {
+      setIsMouseDownInside(false);
+    }, 100);
+  };
+
+  const handleContainerClick = (e) => {
+    // Prevenir que el clic se propague al overlay
+    e.stopPropagation();
+  };
+
   return (
     <div className="auth-overlay" onClick={handleOverlayClick}>
-      <div className="auth-container" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="auth-container"
+        onClick={handleContainerClick}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+      >
         <button className="auth-close" onClick={onClose}>
           <X size={20} />
         </button>

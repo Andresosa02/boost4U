@@ -11,6 +11,20 @@ export const User = () => {
   const [userRole, setUserRole] = useState(null);
   const menuRef = useRef(null);
 
+  const getAvatarUrl = (url) => {
+    if (!url) return "";
+    // Si ya es una URL completa (Google, etc.), usarla directamente
+    if (url.startsWith("http")) return url;
+    // Si es una ruta de Supabase Storage, obtener la URL pública
+    const storagePath = url.startsWith("Avatars/")
+      ? url.replace("Avatars/", "")
+      : url;
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("Avatars").getPublicUrl(storagePath);
+    return publicUrl;
+  };
+
   useEffect(() => {
     // Obtener usuario actual
     const getUser = async () => {
@@ -32,7 +46,7 @@ export const User = () => {
 
           if (data) {
             setUsername(data.username || data.full_name);
-            setProfilePicture(data.avatar_url);
+            setProfilePicture(getAvatarUrl(data.avatar_url));
           }
         }
       } catch (error) {
@@ -73,9 +87,13 @@ export const User = () => {
     <div className="user-dropdown" ref={menuRef}>
       <button onClick={() => setIsOpen(!isOpen)} className="user-trigger">
         <img
-          src={profilePicture}
+          src={profilePicture || "https://placehold.co/80x80?text=User"}
           alt="Foto de perfil"
           className="user-avatar"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            e.currentTarget.src = "https://placehold.co/80x80?text=User";
+          }}
         />
       </button>
       {isOpen && (
@@ -83,9 +101,13 @@ export const User = () => {
           <div className="user-card">
             <div className="">
               <img
-                src={profilePicture}
+                src={profilePicture || "https://placehold.co/90x90?text=User"}
                 alt="Foto de perfil"
                 className="user-initial"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = "https://placehold.co/90x90?text=User";
+                }}
               />
             </div>
             <div className="user-info">
@@ -113,6 +135,13 @@ export const User = () => {
               onClick={() => setIsOpen(false)}
             >
               <span>Settings</span>
+            </Link>
+            <Link
+              to="/sales"
+              className="user-menu-item"
+              onClick={() => setIsOpen(false)}
+            >
+              <span>Sales</span>
             </Link>
             {userRole === "admin" && (
               <Link

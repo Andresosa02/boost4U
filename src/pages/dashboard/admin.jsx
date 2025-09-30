@@ -14,29 +14,43 @@ export const Admin = () => {
   const [transactions, setTransactions] = useState([]);
   const [accounts, setAccounts] = useState([]);
 
+  const getAvatarUrl = (url) => {
+    if (!url) return "";
+    // Si ya es una URL completa (Google, etc.), usarla directamente
+    if (url.startsWith("http")) return url;
+    // Si es una ruta de Supabase Storage, obtener la URL pública
+    const storagePath = url.startsWith("Avatars/")
+      ? url.replace("Avatars/", "")
+      : url;
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("Avatars").getPublicUrl(storagePath);
+    return publicUrl;
+  };
+
   useEffect(() => {
+    const loadData = async () => {
+      await Promise.all([
+        loadUsers(),
+        loadSellers(),
+        loadApplications(),
+        loadTransactions(),
+        loadAccounts(),
+      ]);
+    };
+
+    const checkAccess = async () => {
+      const adminAccess = await isAdmin();
+      setHasAccess(adminAccess);
+      setLoading(false);
+
+      if (adminAccess) {
+        loadData();
+      }
+    };
+
     checkAccess();
   }, []);
-
-  const checkAccess = async () => {
-    const adminAccess = await isAdmin();
-    setHasAccess(adminAccess);
-    setLoading(false);
-
-    if (adminAccess) {
-      loadData();
-    }
-  };
-
-  const loadData = async () => {
-    await Promise.all([
-      loadUsers(),
-      loadSellers(),
-      loadApplications(),
-      loadTransactions(),
-      loadAccounts(),
-    ]);
-  };
 
   const loadUsers = async () => {
     try {
@@ -123,9 +137,15 @@ export const Admin = () => {
     try {
       const [lolAccounts, fortniteAccounts, valorantAccounts] =
         await Promise.all([
-          supabase.from("accounts").select("*").limit(10),
-          supabase.from("accountFornite").select("*").limit(10),
-          supabase.from("accountValorant").select("*").limit(10),
+          supabase.from("accounts").select("*, profiles(username)").limit(1000),
+          supabase
+            .from("accountFornite")
+            .select("*, profiles(username)")
+            .limit(1000),
+          supabase
+            .from("accountValorant")
+            .select("*, profiles(username)")
+            .limit(1000),
         ]);
 
       const allAccounts = [
@@ -226,6 +246,30 @@ export const Admin = () => {
     }
   };
 
+  const toggleSellerStatus = async (sellerId, currentStatus) => {
+    const newStatus = !currentStatus;
+    const action = newStatus ? "activar" : "desactivar";
+
+    if (!confirm(`¿Estás seguro de que quieres ${action} este vendedor?`))
+      return;
+
+    try {
+      const { error } = await supabase
+        .from("profileSellers")
+        .update({ is_active: newStatus })
+        .eq("id", sellerId);
+
+      if (error) throw error;
+
+      // Recargar la lista de vendedores
+      loadSellers();
+      alert(`Vendedor ${action}do exitosamente`);
+    } catch (error) {
+      console.error("Error updating seller status:", error);
+      alert("Error al actualizar el estado del vendedor");
+    }
+  };
+
   if (loading) {
     return (
       <div>
@@ -303,7 +347,7 @@ export const Admin = () => {
                   <thead>
                     <tr>
                       <th>User</th>
-                      <th>Email</th>
+                      <th>Provider</th>
                       <th>Register's Date</th>
                       <th>Delete</th>
                     </tr>
@@ -314,14 +358,22 @@ export const Admin = () => {
                         <td>
                           <div className="user-info">
                             <img
-                              src={user.avatar_url}
+                              src={
+                                getAvatarUrl(user.avatar_url) ||
+                                "https://placehold.co/40x40?text=User"
+                              }
                               alt="Avatar"
                               className="user-avatar-small"
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                e.currentTarget.src =
+                                  "https://placehold.co/40x40?text=User";
+                              }}
                             />
                             <span>{user.username}</span>
                           </div>
                         </td>
-                        <td>{user.email}</td>
+                        <td>{user.provider}</td>
                         <td>
                           {new Date(user.created_at).toLocaleDateString()}
                         </td>
@@ -375,7 +427,12 @@ export const Admin = () => {
                           </span>
                         </td>
                         <td>
-                          <button className="btn-secondary">
+                          <button
+                            className="btn-secondary"
+                            onClick={() =>
+                              toggleSellerStatus(seller.id, seller.is_active)
+                            }
+                          >
                             {seller.is_active ? "Desactivar" : "Activar"}
                           </button>
                         </td>
@@ -494,6 +551,7 @@ export const Admin = () => {
                       <th>Juego</th>
                       <th>Detalles</th>
                       <th>Precio</th>
+                      <th>Vendedor</th>
                       <th>Estado</th>
                       <th>Fecha</th>
                     </tr>
@@ -505,21 +563,22 @@ export const Admin = () => {
                         <td>
                           {account.game === "League of Legends" && (
                             <span>
-                              {account.rank} - {account.server}
+                              {account.rank} - {account.region}
                             </span>
                           )}
                           {account.game === "Fortnite" && (
                             <span>
-                              {account.account_type} - {account.platform}
+                              {account.accountType} - {account.entorno}
                             </span>
                           )}
                           {account.game === "Valorant" && (
                             <span>
-                              {account.rank} - {account.server}
+                              {account.rank} - {account.region}
                             </span>
                           )}
                         </td>
                         <td>${account.price}</td>
+                        <td>{account.profiles?.username}</td>
                         <td>
                           <span
                             className={`status ${

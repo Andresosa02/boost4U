@@ -13,9 +13,8 @@ const ServerFilter = ({
 
   const serverOptions = [
     { name: "Europe West", code: "EU" },
-    { name: "Latin America North", code: "LAN" },
-    { name: "Latin America South", code: "LAS" },
-    { name: "Oceania", code: "OCE" },
+    { name: "North America", code: "NA" },
+    { name: "Latin America", code: "LATAM" },
   ];
 
   const searcherServer = (e) => {

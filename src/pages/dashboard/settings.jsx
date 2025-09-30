@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import NavbarUsers from "../../components/ui/navbarUsers";
 import supabase from "../../supabaseClient";
+import AvatarUploader from "./AvatarUploader";
 import "../../styles/Dashboard.css";
 
 export const Settings = () => {
@@ -8,7 +9,29 @@ export const Settings = () => {
   const [username, setUsername] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
 
-  const getProfile = async () => {
+  // Función para obtener la URL correcta del avatar
+  const getAvatarUrl = (url) => {
+    if (!url) return "";
+
+    // Si ya es una URL completa (Google, etc.), usarla directamente
+    if (url.startsWith("http")) {
+      return url;
+    }
+
+    // Si es una ruta de Supabase Storage, obtener la URL pública
+    // La ruta ya no debe incluir 'Avatars/' porque se especifica en .from('Avatars')
+    const storagePath = url.startsWith("Avatars/")
+      ? url.replace("Avatars/", "")
+      : url;
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("Avatars").getPublicUrl(storagePath);
+
+    return publicUrl;
+  };
+
+  const getProfile = useCallback(async () => {
     try {
       setLoading(true);
       const {
@@ -28,7 +51,7 @@ export const Settings = () => {
 
         if (data) {
           setUsername(data.username);
-          setAvatarUrl(data.avatar_url);
+          setAvatarUrl(getAvatarUrl(data.avatar_url));
         }
       }
     } catch (error) {
@@ -36,11 +59,11 @@ export const Settings = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [getProfile]);
 
   const updateProfile = async (e) => {
     e.preventDefault();
@@ -95,12 +118,10 @@ export const Settings = () => {
                 />
               </div>
               <div>
-                <label htmlFor="avatarUrl">URL de la imagen de perfil</label>
-                <input
-                  id="avatarUrl"
-                  type="text"
-                  value={avatarUrl || ""}
-                  onChange={(e) => setAvatarUrl(e.target.value)}
+                <label htmlFor="avatarUrl">Imagen de perfil</label>
+                <AvatarUploader
+                  url={avatarUrl}
+                  onUpload={(filePath) => setAvatarUrl(filePath)} // Actualiza el estado con la nueva ruta
                 />
               </div>
               <div>
