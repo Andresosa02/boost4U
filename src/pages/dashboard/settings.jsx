@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import NavbarUsers from "../../components/ui/navbarUsers";
 import supabase from "../../supabaseClient";
 import AvatarUploader from "./AvatarUploader";
-import "../../styles/Dashboard.css";
+import "./style/Dashboard.css";
 
 export const Settings = () => {
   const [loading, setLoading] = useState(false);
@@ -102,8 +102,8 @@ export const Settings = () => {
   return (
     <div>
       <NavbarUsers />
-      <div className="contenedor">
-        <div className="form-widget">
+      <div className="dashboard-contenedor">
+        <div className="dashboard-form-widget">
           {loading ? (
             "Cargando perfil..."
           ) : (

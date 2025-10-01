@@ -16,6 +16,7 @@ import Orders from "./pages/dashboard/orders.jsx";
 import Library from "./pages/dashboard/library.jsx";
 import Admin from "./pages/dashboard/admin.jsx";
 import Sales from "./pages/dashboard/sales.jsx";
+import VendiendoCuentaslol from "./pages/Ventas/vendiendoCuentaslol.jsx";
 
 import "./App.css";
 
@@ -39,6 +40,10 @@ function App() {
         <Route path="/library" element={<Library />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/sales" element={<Sales />} />
+        <Route
+          path="/vendiendoCuentaslol/:id"
+          element={<VendiendoCuentaslol />}
+        />
       </Routes>
     </BrowserRouter>
   );

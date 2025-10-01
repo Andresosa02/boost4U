@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import supabase from "../supabaseClient";
 import React, { useState, useEffect, useRef } from "react";
 import { getUserRole } from "../utils/roles";
-import "../styles/Dashboard.css";
+import "../pages/dashboard/style/Dashboard.css";
 
 export const User = () => {
   const [username, setUsername] = useState("");
@@ -84,12 +84,15 @@ export const User = () => {
   };
 
   return (
-    <div className="user-dropdown" ref={menuRef}>
-      <button onClick={() => setIsOpen(!isOpen)} className="user-trigger">
+    <div className="dashboard-user-dropdown" ref={menuRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="dashboard-user-trigger"
+      >
         <img
           src={profilePicture || "https://placehold.co/80x80?text=User"}
           alt="Foto de perfil"
-          className="user-avatar"
+          className="dashboard-user-avatar"
           referrerPolicy="no-referrer"
           onError={(e) => {
             e.currentTarget.src = "https://placehold.co/80x80?text=User";
@@ -97,48 +100,48 @@ export const User = () => {
         />
       </button>
       {isOpen && (
-        <div className="user-menu">
-          <div className="user-card">
+        <div className="dashboard-user-menu">
+          <div className="dashboard-user-card">
             <div className="">
               <img
                 src={profilePicture || "https://placehold.co/90x90?text=User"}
                 alt="Foto de perfil"
-                className="user-initial"
+                className="dashboard-user-initial"
                 referrerPolicy="no-referrer"
                 onError={(e) => {
                   e.currentTarget.src = "https://placehold.co/90x90?text=User";
                 }}
               />
             </div>
-            <div className="user-info">
-              <div className="user-name">{username || "Usuario"}</div>
+            <div className="dashboard-user-info">
+              <div className="dashboard-user-name">{username || "Usuario"}</div>
             </div>
           </div>
-          <div className="user-menu-items">
+          <div className="dashboard-user-menu-items">
             <Link
               to="/orders"
-              className="user-menu-item"
+              className="dashboard-user-menu-item"
               onClick={() => setIsOpen(false)}
             >
               <span>Dashboard</span>
             </Link>
             <Link
               to="/library"
-              className="user-menu-item"
+              className="dashboard-user-menu-item"
               onClick={() => setIsOpen(false)}
             >
               <span>Library</span>
             </Link>
             <Link
               to="/settings"
-              className="user-menu-item"
+              className="dashboard-user-menu-item"
               onClick={() => setIsOpen(false)}
             >
               <span>Settings</span>
             </Link>
             <Link
               to="/sales"
-              className="user-menu-item"
+              className="dashboard-user-menu-item"
               onClick={() => setIsOpen(false)}
             >
               <span>Sales</span>
@@ -146,17 +149,17 @@ export const User = () => {
             {userRole === "admin" && (
               <Link
                 to="/admin"
-                className="user-menu-item"
+                className="dashboard-user-menu-item"
                 onClick={() => setIsOpen(false)}
               >
                 <span>Admin Panel</span>
               </Link>
             )}
           </div>
-          <div className="user-menu-footer">
+          <div className="dashboard-user-menu-footer">
             <Link to="/">
               <button
-                className="user-menu-item danger"
+                className="dashboard-user-menu-item dashboard-danger"
                 onClick={cerrarSesion}
                 type="button"
               >

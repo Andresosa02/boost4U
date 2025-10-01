@@ -1,0 +1,491 @@
+/* VendiendoCuentaslol.css - Estilos para replicar el diseño exacto de la imagen */
+
+.vendiendo-cuentas-container {
+  margin-top: 63px;
+  background-color: #1a1a1a;
+  min-height: 100vh;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Banner Superior */
+.account-banner {
+  background-color: #2a2a2a;
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+}
+
+.banner-info {
+  color: white;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.banner-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badge.cashback {
+  background-color: #fbbf24;
+  color: white;
+}
+
+.badge.instant {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.badge.warranty {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* Layout Principal */
+.main-layout {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+  gap: 2rem;
+}
+
+/* Columna Izquierda */
+.left-column {
+  flex: 1;
+  max-width: 70%;
+}
+
+/* Columna Derecha */
+.right-column {
+  flex: 0 0 30%;
+  max-width: 400px;
+}
+
+/* Sección Account Data */
+.account-data-section {
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.description-section {
+  color: white;
+}
+
+.seller-info {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.features-list {
+  margin-bottom: 1rem;
+}
+
+.feature-item {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: #e5e7eb;
+}
+
+.seller-stats {
+  font-size: 0.9rem;
+}
+
+.stat-line {
+  margin-bottom: 0.5rem;
+  color: #e5e7eb;
+}
+
+/* Tabla de Estadísticas */
+.stats-section {
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  color: white;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.stat-value {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Sección de Filtros */
+.filters-section {
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.filter-tab {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.filter-tab:not(.active) {
+  background-color: #374151;
+  color: #9ca3af;
+}
+
+.filter-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.empty-state {
+  color: white;
+}
+
+.empty-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
+
+.empty-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.empty-description {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+/* Sidebar - Fast Checkout */
+.checkout-section {
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.checkout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.checkout-header h3 {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.bookmark-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.checkout-description {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.checkout-features {
+  margin-bottom: 1.5rem;
+}
+
+.checkout-feature {
+  color: #9ca3af;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.price-section {
+  margin-bottom: 1.5rem;
+}
+
+.price-display {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.price {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.currency {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.cashback-badge {
+  background-color: #fbbf24;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.checkout-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.buy-button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.buy-button:hover {
+  background-color: #2563eb;
+}
+
+.chat-button {
+  background-color: #374151;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.chat-button:hover {
+  background-color: #4b5563;
+}
+
+/* Trustpilot Section */
+.trustpilot-section {
+  background-color: #065f46;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.trustpilot-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.trustpilot-rating {
+  font-weight: 600;
+}
+
+.trustpilot-stars {
+  display: flex;
+  gap: 0.1rem;
+}
+
+.star {
+  font-size: 0.7rem;
+}
+
+.trustpilot-reviews {
+  font-size: 0.7rem;
+}
+
+/* Gallery Section */
+.gallery-section {
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.gallery-header h3 {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.gallery-nav {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.nav-btn {
+  background-color: #374151;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.nav-btn:hover {
+  background-color: #4b5563;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.gallery-item {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-counter {
+  text-align: right;
+  color: #9ca3af;
+  font-size: 0.7rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .main-layout {
+    flex-direction: column;
+  }
+
+  .left-column {
+    max-width: 100%;
+  }
+
+  .right-column {
+    max-width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-layout {
+    padding: 0.5rem;
+    gap: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-tabs {
+    flex-direction: column;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .banner-badges {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .price {
+    font-size: 1.5rem;
+  }
+
+  .account-data-section,
+  .stats-section,
+  .filters-section,
+  .checkout-section,
+  .gallery-section {
+    padding: 1rem;
+  }
+}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavbarUsers from "../../components/ui/navbarUsers";
 import supabase from "../../supabaseClient";
 import { getUserRole } from "../../utils/roles";
-import "../../styles/Dashboard.css";
+import "./style/Dashboard.css";
 
 export const Sales = () => {
   const [loading, setLoading] = useState(true);
@@ -130,14 +130,14 @@ export const Sales = () => {
   };
 
   const renderApplicationForm = () => (
-    <div className="application-form">
+    <div className="dashboard-application-form">
       <h2>¿Quieres ser vendedor?</h2>
       <p>
         Completa el formulario para aplicar como vendedor en nuestra plataforma.
       </p>
 
       <form onSubmit={handleApplicationSubmit}>
-        <div className="form-group">
+        <div className="dashboard-form-group">
           <label htmlFor="first_name">Nombre *</label>
           <input
             type="text"
@@ -153,7 +153,7 @@ export const Sales = () => {
           />
         </div>
 
-        <div className="form-group">
+        <div className="dashboard-form-group">
           <label htmlFor="last_name">Apellido *</label>
           <input
             type="text"
@@ -169,7 +169,7 @@ export const Sales = () => {
           />
         </div>
 
-        <div className="form-group">
+        <div className="dashboard-form-group">
           <label htmlFor="phone">Número de teléfono *</label>
           <input
             type="tel"
@@ -182,7 +182,7 @@ export const Sales = () => {
           />
         </div>
 
-        <div className="form-group">
+        <div className="dashboard-form-group">
           <label htmlFor="email">Email *</label>
           <input
             type="email"
@@ -195,7 +195,7 @@ export const Sales = () => {
           />
         </div>
 
-        <div className="form-actions">
+        <div className="dashboard-form-actions">
           <button type="button" onClick={() => setShowApplicationForm(false)}>
             Cancelar
           </button>
@@ -206,11 +206,11 @@ export const Sales = () => {
   );
 
   const renderGameSelection = () => (
-    <div className="game-selection">
+    <div className="dashboard-game-selection">
       <h2>Selecciona el juego</h2>
-      <div className="games-grid">
+      <div className="dashboard-games-grid">
         <button
-          className="game-card"
+          className="dashboard-game-card"
           onClick={() => {
             setSelectedGame("lol");
             setShowPublishForm(true);
@@ -221,7 +221,7 @@ export const Sales = () => {
         </button>
 
         <button
-          className="game-card"
+          className="dashboard-game-card"
           onClick={() => {
             setSelectedGame("fortnite");
             setShowPublishForm(true);
@@ -232,7 +232,7 @@ export const Sales = () => {
         </button>
 
         <button
-          className="game-card"
+          className="dashboard-game-card"
           onClick={() => {
             setSelectedGame("valorant");
             setShowPublishForm(true);
@@ -248,10 +248,10 @@ export const Sales = () => {
   const renderPublishForm = () => {
     if (selectedGame === "lol") {
       return (
-        <div className="publish-form">
+        <div className="dashboard-publish-form">
           <h2>Publicar Cuenta de League of Legends</h2>
           <form onSubmit={handlePublishSubmit}>
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="region">Servidor *</label>
               <select
                 id="region"
@@ -269,7 +269,7 @@ export const Sales = () => {
               </select>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="rank">Rango *</label>
               <div style={{ display: "flex", gap: "10px" }}>
                 <select
@@ -333,8 +333,10 @@ export const Sales = () => {
               </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="description">Descripción *</label>
+            <div className="dashboard-form-group">
+              <label htmlFor="description">
+                Description (for account card) *
+              </label>
               <textarea
                 id="description"
                 value={publishData.description || ""}
@@ -349,7 +351,25 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
+              <label htmlFor="description">
+                Description (for account data in the sales section) *
+              </label>
+              <textarea
+                id="description"
+                value={publishData.descriptionData || ""}
+                onChange={(e) =>
+                  setPublishData({
+                    ...publishData,
+                    descriptionData: e.target.value,
+                  })
+                }
+                required
+                rows="3"
+              />
+            </div>
+
+            <div className="dashboard-form-group">
               <label htmlFor="champions">Número de campeones</label>
               <input
                 type="number"
@@ -358,11 +378,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, champions: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="skins">Número de skins</label>
               <input
                 type="number"
@@ -371,11 +392,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, skins: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="level">Nivel</label>
               <input
                 type="number"
@@ -384,11 +406,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, level: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="be">Blue Essence</label>
               <input
                 type="number"
@@ -397,11 +420,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, be: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="rp">Riot Points</label>
               <input
                 type="number"
@@ -410,11 +434,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, rp: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="price">Precio *</label>
               <input
                 type="number"
@@ -423,14 +448,16 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, price: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 required
                 min="0"
                 step="0.01"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label>
+                Featured
                 <input
                   type="checkbox"
                   checked={publishData.isFeatured || false}
@@ -441,12 +468,12 @@ export const Sales = () => {
                     })
                   }
                 />
-                Featured
               </label>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label>
+                Instant Delivery
                 <input
                   type="checkbox"
                   checked={publishData.instantDelivery || false}
@@ -457,11 +484,10 @@ export const Sales = () => {
                     })
                   }
                 />
-                Instant Delivery
               </label>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="roles">Roles</label>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                 {["ADC", "TOP", "MID", "SUP", "JG"].map((role) => (
@@ -497,7 +523,7 @@ export const Sales = () => {
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="flexRank">Flex Rank</label>
               <div style={{ display: "flex", gap: "10px" }}>
                 <select
@@ -560,7 +586,7 @@ export const Sales = () => {
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="user">Usuario *</label>
               <input
                 type="text"
@@ -573,7 +599,7 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="password">Contraseña *</label>
               <input
                 type="password"
@@ -586,7 +612,7 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-actions">
+            <div className="dashboard-form-actions">
               <button
                 type="button"
                 onClick={() => (setShowPublishForm(false), setSelectedGame(""))}
@@ -602,10 +628,10 @@ export const Sales = () => {
 
     if (selectedGame === "fortnite") {
       return (
-        <div className="publish-form">
+        <div className="dashboard-publish-form">
           <h2>Publicar Cuenta de Fortnite</h2>
           <form onSubmit={handlePublishSubmit}>
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="entorno">Plataforma *</label>
               <select
                 id="entorno"
@@ -625,8 +651,10 @@ export const Sales = () => {
               </select>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="description">Descripción *</label>
+            <div className="dashboard-form-group">
+              <label htmlFor="description">
+                Description (for account card) *
+              </label>
               <textarea
                 id="description"
                 value={publishData.description || ""}
@@ -641,7 +669,25 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
+              <label htmlFor="description">
+                Description (for account data in the sales section) *
+              </label>
+              <textarea
+                id="description"
+                value={publishData.descriptionData || ""}
+                onChange={(e) =>
+                  setPublishData({
+                    ...publishData,
+                    descriptionData: e.target.value,
+                  })
+                }
+                required
+                rows="3"
+              />
+            </div>
+
+            <div className="dashboard-form-group">
               <label htmlFor="skins">Número de skins</label>
               <input
                 type="number"
@@ -650,11 +696,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, skins: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="V_Bucks">V-Bucks</label>
               <input
                 type="number"
@@ -663,11 +710,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, V_Bucks: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="emotes">Emotes</label>
               <input
                 type="number"
@@ -676,11 +724,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, emotes: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="pickaxes">Pickaxes</label>
               <input
                 type="number"
@@ -689,11 +738,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, pickaxes: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="backBlings">Backblings</label>
               <input
                 type="number"
@@ -702,11 +752,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, backBlings: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="gliders">Gliders</label>
               <input
                 type="number"
@@ -715,11 +766,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, gliders: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="wraps">Wraps</label>
               <input
                 type="number"
@@ -728,11 +780,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, wraps: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="loadings">Loadings</label>
               <input
                 type="number"
@@ -741,11 +794,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, loadings: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="sprays">Sprays</label>
               <input
                 type="number"
@@ -754,11 +808,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, sprays: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="level">Nivel</label>
               <input
                 type="number"
@@ -767,11 +822,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, level: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label>
                 <input
                   type="checkbox"
@@ -787,7 +843,7 @@ export const Sales = () => {
               </label>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label>
                 <input
                   type="checkbox"
@@ -803,7 +859,7 @@ export const Sales = () => {
               </label>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="accountType">Account Type</label>
               <select
                 id="accountType"
@@ -825,7 +881,7 @@ export const Sales = () => {
               </select>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="price">Precio *</label>
               <input
                 type="number"
@@ -834,13 +890,14 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, price: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 required
                 min="0"
                 step="0.01"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="user">Usuario *</label>
               <input
                 type="text"
@@ -853,7 +910,7 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="password">Contraseña *</label>
               <input
                 type="password"
@@ -866,7 +923,7 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-actions">
+            <div className="dashboard-form-actions">
               <button
                 type="button"
                 onClick={() => (setShowPublishForm(false), setSelectedGame(""))}
@@ -882,10 +939,10 @@ export const Sales = () => {
 
     if (selectedGame === "valorant") {
       return (
-        <div className="publish-form">
+        <div className="dashboard-publish-form">
           <h2>Publicar Cuenta de Valorant</h2>
           <form onSubmit={handlePublishSubmit}>
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="region">Servidor *</label>
               <select
                 id="region"
@@ -902,7 +959,7 @@ export const Sales = () => {
               </select>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="rank">Rango *</label>
               <div style={{ display: "flex", gap: "10px" }}>
                 <select
@@ -960,8 +1017,10 @@ export const Sales = () => {
               </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="description">Descripción *</label>
+            <div className="dashboard-form-group">
+              <label htmlFor="description">
+                Description (for account card) *
+              </label>
               <textarea
                 id="description"
                 value={publishData.description || ""}
@@ -976,7 +1035,25 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
+              <label htmlFor="description">
+                Description (for account data in the sales section) *
+              </label>
+              <textarea
+                id="description"
+                value={publishData.descriptionData || ""}
+                onChange={(e) =>
+                  setPublishData({
+                    ...publishData,
+                    descriptionData: e.target.value,
+                  })
+                }
+                required
+                rows="3"
+              />
+            </div>
+
+            <div className="dashboard-form-group">
               <label htmlFor="agents">Número de agentes</label>
               <input
                 type="number"
@@ -985,11 +1062,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, agents: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="skins">Número de skins</label>
               <input
                 type="number"
@@ -998,11 +1076,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, skins: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="level">Nivel</label>
               <input
                 type="number"
@@ -1011,11 +1090,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, level: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="vp">Valorant Points</label>
               <input
                 type="number"
@@ -1024,11 +1104,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, vp: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="rp">Riot Points</label>
               <input
                 type="number"
@@ -1037,11 +1118,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, rp: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="plataform">Plataforma</label>
               <select
                 id="plataform"
@@ -1057,7 +1139,7 @@ export const Sales = () => {
               </select>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="rankedWinrate">Ranked Winrate</label>
               <input
                 type="number"
@@ -1070,12 +1152,13 @@ export const Sales = () => {
                   );
                   setPublishData({ ...publishData, rankedWinrate: value });
                 }}
+                onWheel={(e) => e.target.blur()}
                 min="0"
                 max="100"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="buddies">Buddies</label>
               <input
                 type="number"
@@ -1084,11 +1167,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, buddies: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="sprays">Sprays</label>
               <input
                 type="number"
@@ -1097,11 +1181,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, sprays: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="cards">Cards</label>
               <input
                 type="number"
@@ -1110,11 +1195,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, cards: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="titles">Titles</label>
               <input
                 type="number"
@@ -1123,11 +1209,12 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, titles: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 min="0"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="price">Precio *</label>
               <input
                 type="number"
@@ -1136,13 +1223,14 @@ export const Sales = () => {
                 onChange={(e) =>
                   setPublishData({ ...publishData, price: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 required
                 min="0"
                 step="0.01"
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label>
                 <input
                   type="checkbox"
@@ -1158,7 +1246,7 @@ export const Sales = () => {
               </label>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label>
                 <input
                   type="checkbox"
@@ -1174,7 +1262,7 @@ export const Sales = () => {
               </label>
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="user">Usuario *</label>
               <input
                 type="text"
@@ -1187,7 +1275,7 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="dashboard-form-group">
               <label htmlFor="password">Contraseña *</label>
               <input
                 type="password"
@@ -1200,7 +1288,7 @@ export const Sales = () => {
               />
             </div>
 
-            <div className="form-actions">
+            <div className="dashboard-form-actions">
               <button
                 type="button"
                 onClick={() => (setShowPublishForm(false), setSelectedGame(""))}
@@ -1221,8 +1309,8 @@ export const Sales = () => {
     return (
       <div>
         <NavbarUsers />
-        <div className="contenedor">
-          <div className="loading">Cargando...</div>
+        <div className="dashboard-contenedor">
+          <div className="dashboard-loading">Cargando...</div>
         </div>
       </div>
     );
@@ -1231,18 +1319,18 @@ export const Sales = () => {
   return (
     <div>
       <NavbarUsers />
-      <div className="contenedor">
+      <div className="dashboard-contenedor">
         <h1>Sales</h1>
 
         {userRole === "user" && !showApplicationForm && (
-          <div className="sales-message">
+          <div className="dashboard-sales-message">
             <h2>¿Quieres ser vendedor?</h2>
             <p>
               Únete a nuestro equipo de vendedores y comienza a ganar dinero
               vendiendo cuentas de videojuegos.
             </p>
             <button
-              className="btn-primary"
+              className="dashboard-btn-primary"
               onClick={() => setShowApplicationForm(true)}
             >
               Aplicar como Vendedor
@@ -1252,14 +1340,14 @@ export const Sales = () => {
 
         {(userRole === "seller" || userRole === "admin") &&
           !showPublishForm && (
-            <div className="seller-dashboard">
+            <div className="dashboard-seller-dashboard">
               <h2>Panel de Vendedor</h2>
               <p>
                 Bienvenido al panel de vendedor. Aquí puedes publicar nuevas
                 cuentas.
               </p>
               <button
-                className="btn-primary"
+                className="dashboard-btn-primary"
                 onClick={() => setShowPublishForm(true)}
               >
                 Publicar Cuenta

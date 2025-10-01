@@ -4,6 +4,10 @@
   width: 100%;
 }
 
+.text-decoration-none {
+  text-decoration: none;
+}
+
 @media (min-width: 640px) {
   /* sm */
   .item-ancho {

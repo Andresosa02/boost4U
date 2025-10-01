@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavbarUsers from "../../components/ui/navbarUsers";
 import supabase from "../../supabaseClient";
 import { isAdmin } from "../../utils/roles";
-import "../../styles/Dashboard.css";
+import "./style/Dashboard.css";
 
 export const Admin = () => {
   const [loading, setLoading] = useState(true);
@@ -274,8 +274,8 @@ export const Admin = () => {
     return (
       <div>
         <NavbarUsers />
-        <div className="contenedor">
-          <div className="loading">Cargando...</div>
+        <div className="dashboard-contenedor">
+          <div className="dashboard-loading">Cargando...</div>
         </div>
       </div>
     );
@@ -285,8 +285,8 @@ export const Admin = () => {
     return (
       <div>
         <NavbarUsers />
-        <div className="contenedor">
-          <div className="access-denied">
+        <div className="dashboard-contenedor">
+          <div className="dashboard-access-denied">
             <h2>Acceso Denegado</h2>
             <p>No tienes permisos para acceder a esta sección.</p>
           </div>
@@ -298,51 +298,57 @@ export const Admin = () => {
   return (
     <div>
       <NavbarUsers />
-      <div className="contenedor">
+      <div className="dashboard-contenedor">
         <h1>Panel de Administración</h1>
 
-        <div className="admin-tabs">
+        <div className="dashboard-admin-tabs">
           <button
-            className={`admin-tab ${activeTab === "users" ? "active" : ""}`}
+            className={`dashboard-admin-tab ${
+              activeTab === "users" ? "dashboard-active" : ""
+            }`}
             onClick={() => setActiveTab("users")}
           >
             Usuarios ({users.length})
           </button>
           <button
-            className={`admin-tab ${activeTab === "sellers" ? "active" : ""}`}
+            className={`dashboard-admin-tab ${
+              activeTab === "sellers" ? "dashboard-active" : ""
+            }`}
             onClick={() => setActiveTab("sellers")}
           >
             Vendedores ({sellers.length})
           </button>
           <button
-            className={`admin-tab ${
-              activeTab === "applications" ? "active" : ""
+            className={`dashboard-admin-tab ${
+              activeTab === "applications" ? "dashboard-active" : ""
             }`}
             onClick={() => setActiveTab("applications")}
           >
             Solicitudes ({applications.length})
           </button>
           <button
-            className={`admin-tab ${
-              activeTab === "transactions" ? "active" : ""
+            className={`dashboard-admin-tab ${
+              activeTab === "transactions" ? "dashboard-active" : ""
             }`}
             onClick={() => setActiveTab("transactions")}
           >
             Transacciones ({transactions.length})
           </button>
           <button
-            className={`admin-tab ${activeTab === "accounts" ? "active" : ""}`}
+            className={`dashboard-admin-tab ${
+              activeTab === "accounts" ? "dashboard-active" : ""
+            }`}
             onClick={() => setActiveTab("accounts")}
           >
             Cuentas ({accounts.length})
           </button>
         </div>
 
-        <div className="admin-content">
+        <div className="dashboard-admin-content">
           {activeTab === "users" && (
-            <div className="admin-section">
+            <div className="dashboard-admin-section">
               <h2>Usuarios Registrados</h2>
-              <div className="admin-table">
+              <div className="dashboard-admin-table">
                 <table>
                   <thead>
                     <tr>
@@ -356,14 +362,14 @@ export const Admin = () => {
                     {users.map((user) => (
                       <tr key={user.id}>
                         <td>
-                          <div className="user-info">
+                          <div className="dashboard-user-info">
                             <img
                               src={
                                 getAvatarUrl(user.avatar_url) ||
                                 "https://placehold.co/40x40?text=User"
                               }
                               alt="Avatar"
-                              className="user-avatar-small"
+                              className="dashboard-user-avatar-small"
                               referrerPolicy="no-referrer"
                               onError={(e) => {
                                 e.currentTarget.src =
@@ -379,7 +385,7 @@ export const Admin = () => {
                         </td>
                         <td>
                           <button
-                            className="btn-danger"
+                            className="dashboard-btn-danger"
                             onClick={() => deleteUser(user.id)}
                           >
                             Delete
@@ -394,9 +400,9 @@ export const Admin = () => {
           )}
 
           {activeTab === "sellers" && (
-            <div className="admin-section">
+            <div className="dashboard-admin-section">
               <h2>Vendedores Activos</h2>
-              <div className="admin-table">
+              <div className="dashboard-admin-table">
                 <table>
                   <thead>
                     <tr>
@@ -411,7 +417,7 @@ export const Admin = () => {
                     {sellers.map((seller) => (
                       <tr key={seller.id}>
                         <td>
-                          <div className="user-info">
+                          <div className="dashboard-user-info">
                             <span>{seller.user_id?.username}</span>
                           </div>
                         </td>
@@ -419,8 +425,10 @@ export const Admin = () => {
                         <td>${seller.total_earnings}</td>
                         <td>
                           <span
-                            className={`status ${
-                              seller.is_active ? "active" : "inactive"
+                            className={`dashboard-status ${
+                              seller.is_active
+                                ? "dashboard-active"
+                                : "dashboard-inactive"
                             }`}
                           >
                             {seller.is_active ? "Activo" : "Inactivo"}
@@ -428,7 +436,7 @@ export const Admin = () => {
                         </td>
                         <td>
                           <button
-                            className="btn-secondary"
+                            className="dashboard-btn-secondary"
                             onClick={() =>
                               toggleSellerStatus(seller.id, seller.is_active)
                             }
@@ -445,20 +453,23 @@ export const Admin = () => {
           )}
 
           {activeTab === "applications" && (
-            <div className="admin-section">
+            <div className="dashboard-admin-section">
               <h2>Solicitudes de Vendedores</h2>
-              <div className="applications-grid">
+              <div className="dashboard-applications-grid">
                 {applications.map((application) => (
-                  <div key={application.id} className="application-card">
-                    <div className="application-header">
+                  <div
+                    key={application.id}
+                    className="dashboard-application-card"
+                  >
+                    <div className="dashboard-application-header">
                       <h3>
                         {application.first_name} {application.last_name}
                       </h3>
-                      <span className="application-date">
+                      <span className="dashboard-application-date">
                         {new Date(application.created_at).toLocaleDateString()}
                       </span>
                     </div>
-                    <div className="application-details">
+                    <div className="dashboard-application-details">
                       <p>
                         <strong>Email:</strong> {application.email}
                       </p>
@@ -470,9 +481,9 @@ export const Admin = () => {
                         {application.profiles?.username}
                       </p>
                     </div>
-                    <div className="application-actions">
+                    <div className="dashboard-application-actions">
                       <button
-                        className="btn-success"
+                        className="dashboard-btn-success"
                         onClick={() =>
                           handleApplicationDecision(application.id, "approved")
                         }
@@ -502,9 +513,9 @@ export const Admin = () => {
           )}
 
           {activeTab === "transactions" && (
-            <div className="admin-section">
+            <div className="dashboard-admin-section">
               <h2>Transacciones</h2>
-              <div className="admin-table">
+              <div className="dashboard-admin-table">
                 <table>
                   <thead>
                     <tr>
@@ -524,7 +535,9 @@ export const Admin = () => {
                         <td>{transaction.seller?.profiles?.username}</td>
                         <td>${transaction.amount}</td>
                         <td>
-                          <span className={`status ${transaction.status}`}>
+                          <span
+                            className={`dashboard-status dashboard-${transaction.status}`}
+                          >
                             {transaction.status}
                           </span>
                         </td>
@@ -542,9 +555,9 @@ export const Admin = () => {
           )}
 
           {activeTab === "accounts" && (
-            <div className="admin-section">
+            <div className="dashboard-admin-section">
               <h2>Cuentas Publicadas</h2>
-              <div className="admin-table">
+              <div className="dashboard-admin-table">
                 <table>
                   <thead>
                     <tr>
@@ -581,8 +594,10 @@ export const Admin = () => {
                         <td>{account.profiles?.username}</td>
                         <td>
                           <span
-                            className={`status ${
-                              account.is_available ? "available" : "sold"
+                            className={`dashboard-status ${
+                              account.is_available
+                                ? "dashboard-available"
+                                : "dashboard-sold"
                             }`}
                           >
                             {account.is_available ? "Disponible" : "Vendida"}
