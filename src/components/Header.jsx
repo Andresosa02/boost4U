@@ -347,13 +347,19 @@ export const Header = () => {
     >
       <nav className="main-nav">
         <ul className="nav-links">
-          <div className="logo">
-            <Link to="/">Boost4U</Link>
+          <div>
+            <Link to="/">
+              <img
+                src="https://thumbs.dreamstime.com/b/icono-de-la-corona-en-fondo-rojo-ilustraci%C3%B3n-vectorial-estilo-plano-179116854.jpg"
+                alt="Boost4U"
+                className="logo-navbar"
+              />
+            </Link>
           </div>
 
           {/* --- MENÚ DE JUEGOS --- */}
           <li
-            className="nav-item"
+            className="nav-item-navbar"
             onMouseEnter={handleGamesMouseEnter}
             onMouseLeave={handleGamesMouseLeave}
           >
@@ -555,7 +561,7 @@ export const Header = () => {
 
           {/* --- MENÚ DE SERVICIOS --- */}
           <li
-            className="nav-item"
+            className="nav-item-navbar"
             onMouseEnter={handleServicesMouseEnter}
             onMouseLeave={handleServicesMouseLeave}
           >

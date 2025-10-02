@@ -1,7 +1,7 @@
 // src/App.jsx
 
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Index from "./pages/index.jsx";
 import LolPage from "./pages/lolpage.jsx";
 import BoostingLol from "./pages/boostinglol.jsx";
@@ -17,13 +17,20 @@ import Library from "./pages/dashboard/library.jsx";
 import Admin from "./pages/dashboard/admin.jsx";
 import Sales from "./pages/dashboard/sales.jsx";
 import VendiendoCuentaslol from "./pages/Ventas/vendiendoCuentaslol.jsx";
+import VendiendoCuentasValorant from "./pages/Ventas/vendiendoCuentasValorant.jsx";
+import VendiendoCuentasFornite from "./pages/Ventas/vendiendoCuentasFornite.jsx";
+import Checkout from "./pages/checkout/checkout.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 import "./App.css";
 
-function App() {
+function AppInner() {
+  const location = useLocation();
+  const hideHeader = location.pathname.startsWith("/checkout");
+
   return (
-    <BrowserRouter>
-      <Header />
+    <>
+      {!hideHeader && <Header />}
 
       <Routes>
         <Route path="/" element={<Index />} />
@@ -44,7 +51,31 @@ function App() {
           path="/vendiendoCuentaslol/:id"
           element={<VendiendoCuentaslol />}
         />
+        <Route
+          path="/vendiendoCuentasValorant/:id"
+          element={<VendiendoCuentasValorant />}
+        />
+        <Route
+          path="/vendiendoCuentasFortnite/:id"
+          element={<VendiendoCuentasFornite />}
+        />
+        <Route
+          path="/checkout/:id"
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppInner />
     </BrowserRouter>
   );
 }

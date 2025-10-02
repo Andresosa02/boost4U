@@ -56,9 +56,12 @@
   background-color: #1f0000ff;
   color: white;
 }
-.logo {
+.logo-navbar {
   font-size: 23px;
   font-weight: 600;
+  width: 42px;
+  border-radius: 10px;
+  height: auto;
   padding: 4.5px;
   position: relative;
 
@@ -80,18 +83,18 @@
   padding: 4px;
 }
 
-.nav-item {
+.nav-item-navbar {
   padding: 0.75rem 0rem;
   cursor: pointer;
   border-radius: 7px;
   transition: all 0.3s ease;
 }
 
-.nav-item:hover {
+.nav-item-navbar:hover {
   transform: translateY(-1px);
 }
 
-.nav-item > span {
+.nav-item-navbar > span {
   font-weight: 500;
   color: #e2e8f0;
   display: flex;
@@ -117,7 +120,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nav-item:hover .dropdown-menuGames {
+.nav-item-navbar:hover .dropdown-menuGames {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0) scale(1);
@@ -354,7 +357,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nav-item:hover .dropdown-menuServices {
+.nav-item-navbar:hover .dropdown-menuServices {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0) scale(1);

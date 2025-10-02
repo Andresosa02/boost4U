@@ -1,6 +1,7 @@
 // src/components/AccountCard.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import AuthProtectedLink from "./AuthProtectedLink";
 import "../styles/AccountCard.css"; // Asegúrate de crear este archivo CSS
 
 export const AccountCard = ({ account }) => {
@@ -88,10 +89,15 @@ export const AccountCard = ({ account }) => {
                       ${account.price.toFixed(2)}
                     </span>
                     <span className="divisa">USD</span>
-                  </div>
-                  <button className="buy-button">
-                    <span className="truncate">Comprar Ahora →</span>
-                  </button>
+                  </div>{" "}
+                  <AuthProtectedLink
+                    to={`/checkout/${account.id}`}
+                    className="text-decoration-none"
+                  >
+                    <button className="buy-button">
+                      <span className="truncate">Comprar Ahora →</span>
+                    </button>
+                  </AuthProtectedLink>
                 </div>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import supabase from "../../supabaseClient";
+import "./style/Dashboard.css";
 
 export const AvatarUploader = ({ url, onUpload }) => {
   const [avatarUrl, setAvatarUrl] = useState(url);
@@ -108,7 +109,7 @@ export const AvatarUploader = ({ url, onUpload }) => {
           src={avatarUrl}
           alt="Avatar"
           className="avatar-image"
-          style={{ height: "auto", width: "90px", borderRadius: "50%" }}
+          style={{ height: "auto", width: "115px", borderRadius: "50%" }}
         />
       ) : (
         <div

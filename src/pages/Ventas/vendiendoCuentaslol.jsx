@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import supabase from "../../supabaseClient";
+import AuthProtectedLink from "../../components/AuthProtectedLink";
 import "./VendiendoCuentaslol.css";
 
 const VendiendoCuentaslol = () => {
@@ -202,8 +203,12 @@ const VendiendoCuentaslol = () => {
               </div>
             </div>
             <div className="checkout-buttons">
-              <button className="buy-button">Buy Account →</button>
-              <button className="chat-button">Chat With Seller</button>
+              <AuthProtectedLink
+                to={`/checkout/${accountData.id}`}
+                className="text-decoration-none"
+              >
+                <button className="buy-button">Buy Account →</button>
+              </AuthProtectedLink>
             </div>
           </div>
 

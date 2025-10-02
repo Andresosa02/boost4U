@@ -1,6 +1,7 @@
 // src/components/AccountCard.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import AuthProtectedLink from "./AuthProtectedLink";
 import "../styles/AccountCardFornite.css";
 
 export const AccountCardFornite = ({ accountFornite }) => {
@@ -24,7 +25,10 @@ export const AccountCardFornite = ({ accountFornite }) => {
   }
   return (
     <div className="item-ancho">
-      <a className="card" href="#">
+      <Link
+        to={`/vendiendoCuentasFortnite/${accountFornite.id}`}
+        className="text-decoration-none"
+      >
         <div className="account-card">
           {accountFornite.isFeatured && (
             <span className="account-featured">
@@ -124,14 +128,19 @@ export const AccountCardFornite = ({ accountFornite }) => {
                   </span>
                   <span className="divisa">USD</span>
                 </div>
-                <button className="buy-button">
-                  <span className="truncate">Comprar Ahora →</span>
-                </button>
+                <AuthProtectedLink
+                  to={`/checkout/${accountFornite.id}`}
+                  className="text-decoration-none"
+                >
+                  <button className="buy-button">
+                    <span className="truncate">Comprar Ahora →</span>
+                  </button>
+                </AuthProtectedLink>
               </div>
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };
