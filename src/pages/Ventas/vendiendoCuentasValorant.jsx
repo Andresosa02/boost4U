@@ -19,7 +19,7 @@ const VendiendoCuentasValorant = () => {
 
       try {
         const { data, error } = await supabase
-          .from("account") // Tu tabla
+          .from("accountValorant") // Tu tabla
           .select("*") // Selecciona todas las columnas
           .eq("id", id) // 🚨 FILTRA por el ID
           .single(); // Espera un único resultado
@@ -82,6 +82,7 @@ const VendiendoCuentasValorant = () => {
           {/* Sección Account Data */}
           <div className="account-data-section">
             <h2 className="section-title">Account Data</h2>
+            Description
             <div className="description-section">
               <div className="seller-info">{accountData.descriptionData}</div>
             </div>
@@ -95,8 +96,12 @@ const VendiendoCuentasValorant = () => {
                 <div className="stat-value">{accountData.rank}</div>
               </div>
               <div className="stat-item">
-                <div className="stat-label">Flex Rank</div>
-                <div className="stat-value">{accountData.flexRank}</div>
+                <div className="stat-label">Peak Rank</div>
+                <div className="stat-value">{accountData.peakRank}</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-label">Plataform</div>
+                <div className="stat-value">{accountData.plataform}</div>
               </div>
               <div className="stat-item">
                 <div className="stat-label">Server</div>
@@ -113,20 +118,20 @@ const VendiendoCuentasValorant = () => {
                 </div>
               </div>
               <div className="stat-item">
-                <div className="stat-label">Blue Essence</div>
-                <div className="stat-value">{accountData.be}</div>
+                <div className="stat-label">Agents</div>
+                <div className="stat-value">{accountData.agents}</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-label">Weapon Skins</div>
+                <div className="stat-value">{accountData.skins}</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-label">Valorant Points</div>
+                <div className="stat-value">{accountData.vp}</div>
               </div>
               <div className="stat-item">
                 <div className="stat-label">Riot Points</div>
                 <div className="stat-value">{accountData.rp}</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-label">Champions</div>
-                <div className="stat-value">{accountData.champions}</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-label">Skins</div>
-                <div className="stat-value">{accountData.skins}</div>
               </div>
             </div>
           </div>
@@ -140,7 +145,7 @@ const VendiendoCuentasValorant = () => {
                 }`}
                 onClick={() => setActiveTab("champions")}
               >
-                ⚔️ Champions {accountData.champions}
+                ⚔️ Agents {accountData.agents}
               </button>
               <button
                 className={`filter-tab ${
@@ -148,7 +153,7 @@ const VendiendoCuentasValorant = () => {
                 }`}
                 onClick={() => setActiveTab("skins")}
               >
-                👕 Skins {accountData.skins}
+                👕 Weapon Skins {accountData.skins}
               </button>
               <button
                 className={`filter-tab ${
@@ -156,7 +161,31 @@ const VendiendoCuentasValorant = () => {
                 }`}
                 onClick={() => setActiveTab("roles")}
               >
-                ⚙️ Roles {accountData.roles.length}
+                Buddies {accountData.buddies}
+              </button>
+              <button
+                className={`filter-tab ${
+                  activeTab === "roles" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("roles")}
+              >
+                Cards {accountData.cards}
+              </button>
+              <button
+                className={`filter-tab ${
+                  activeTab === "roles" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("roles")}
+              >
+                Sprays {accountData.sprays}
+              </button>
+              <button
+                className={`filter-tab ${
+                  activeTab === "roles" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("roles")}
+              >
+                Titles {accountData.titles}
               </button>
             </div>
             <div className="filter-content">
@@ -204,7 +233,7 @@ const VendiendoCuentasValorant = () => {
             </div>
             <div className="checkout-buttons">
               <AuthProtectedLink
-                to={`/checkout/${accountData.id}`}
+                to={`/checkoutValorant/${accountData.id}`}
                 className="text-decoration-none"
               >
                 <button className="buy-button">Buy Account →</button>

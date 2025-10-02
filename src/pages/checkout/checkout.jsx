@@ -110,8 +110,7 @@ function Checkout() {
             </div>
             <div
               className={
-                "checkout-toggle" +
-                (merged.isFeatured ? " checkout-toggle--on" : "")
+                "checkout-toggle" + (merged.is ? " checkout-toggle--on" : "")
               }
             />
           </div>

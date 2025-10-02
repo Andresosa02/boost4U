@@ -93,6 +93,8 @@ export const Sales = () => {
       delete cleanData.rankDivision;
       delete cleanData.flexRankTier;
       delete cleanData.flexRankDivision;
+      delete cleanData.rankTierPeak;
+      delete cleanData.rankDivisionPeak;
 
       const accountData = {
         ...cleanData,
@@ -960,7 +962,7 @@ export const Sales = () => {
             </div>
 
             <div className="dashboard-form-group">
-              <label htmlFor="rank">Rango *</label>
+              <label htmlFor="rank">Rank *</label>
               <div style={{ display: "flex", gap: "10px" }}>
                 <select
                   id="rank"
@@ -973,7 +975,7 @@ export const Sales = () => {
                       rank:
                         tier === "Immortal" || tier === "Radiant"
                           ? tier
-                          : `${tier} ${publishData.rankDivision || "1"}`,
+                          : `${tier} ${publishData.rankDivision || ""}`,
                     });
                   }}
                   required
@@ -1007,6 +1009,63 @@ export const Sales = () => {
                   disabled={
                     publishData.rankTier === "Immortal" ||
                     publishData.rankTier === "Radiant"
+                  }
+                >
+                  <option value="">División</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="dashboard-form-group">
+              <label htmlFor="rank">Peak Rank</label>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <select
+                  id="rank"
+                  value={publishData.rankTierPeak || ""}
+                  onChange={(e) => {
+                    const tier = e.target.value;
+                    setPublishData({
+                      ...publishData,
+                      rankTierPeak: tier,
+                      peakRank:
+                        tier === "Immortal" || tier === "Radiant"
+                          ? tier
+                          : `${tier} ${publishData.rankDivisionPeak || ""}`,
+                    });
+                  }}
+                >
+                  <option value="">Seleccionar rango</option>
+                  <option value="Iron">Iron</option>
+                  <option value="Bronze">Bronze</option>
+                  <option value="Silver">Silver</option>
+                  <option value="Gold">Gold</option>
+                  <option value="Platinum">Platinum</option>
+                  <option value="Diamond">Diamond</option>
+                  <option value="Ascendant">Ascendant</option>
+                  <option value="Immortal">Immortal</option>
+                  <option value="Radiant">Radiant</option>
+                </select>
+                <select
+                  id="rankDivision"
+                  value={publishData.rankDivisionPeak || ""}
+                  onChange={(e) => {
+                    const division = e.target.value;
+                    setPublishData({
+                      ...publishData,
+                      rankDivisionPeak: division,
+                      peakRank:
+                        publishData.rankTierPeak === "Immortal" ||
+                        publishData.rankTierPeak === "Radiant"
+                          ? publishData.rankTierPeak
+                          : `${publishData.rankTierPeak} ${division}`,
+                    });
+                  }}
+                  disabled={
+                    publishData.rankTierPeak === "Immortal" ||
+                    publishData.rankTierPeak === "Radiant"
                   }
                 >
                   <option value="">División</option>

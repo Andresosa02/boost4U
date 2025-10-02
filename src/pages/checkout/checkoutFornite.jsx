@@ -17,7 +17,7 @@ function Checkout() {
 
       try {
         const { data, error } = await supabase
-          .from("accounts") // Tu tabla
+          .from("accountFornite") // Tu tabla
           .select("*") // Selecciona todas las columnas
           .eq("id", id) // 🚨 FILTRA por el ID
           .single(); // Espera un único resultado
@@ -72,17 +72,15 @@ function Checkout() {
           <h3 className="checkout-paywith">Pay with</h3>
 
           <div className="checkout-methods">
-            {merged.roles.map((m) => (
-              <label key={m} className={"checkout-method"}>
-                <div className="checkout-method-left">
-                  <span className={`checkout-icon checkout-icon`} />
-                  <div className="checkout-method-info">
-                    <div className="checkout-method-title">{m}</div>
-                  </div>
+            <label className={"checkout-method"}>
+              <div className="checkout-method-left">
+                <span className={`checkout-icon checkout-icon`} />
+                <div className="checkout-method-info">
+                  <div className="checkout-method-title">paypal</div>
                 </div>
-                <span className={"checkout-radio"} />
-              </label>
-            ))}
+              </div>
+              <span className={"checkout-radio"} />
+            </label>
           </div>
         </aside>
 
@@ -110,8 +108,7 @@ function Checkout() {
             </div>
             <div
               className={
-                "checkout-toggle" +
-                (merged.isFeatured ? " checkout-toggle--on" : "")
+                "checkout-toggle" + (merged.is ? " checkout-toggle--on" : "")
               }
             />
           </div>

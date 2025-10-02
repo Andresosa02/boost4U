@@ -175,7 +175,7 @@ const VendiendoCuentasFornite = () => {
             </div>
             <div className="checkout-buttons">
               <AuthProtectedLink
-                to={`/checkout/${accountData.id}`}
+                to={`/checkoutFornite/${accountData.id}`}
                 className="text-decoration-none"
               >
                 <button className="buy-button">Buy Account →</button>

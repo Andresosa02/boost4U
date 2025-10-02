@@ -95,7 +95,7 @@ export const AccountCard = ({ account }) => {
                     className="text-decoration-none"
                   >
                     <button className="buy-button">
-                      <span className="truncate">Comprar Ahora →</span>
+                      <span className="truncate">Buy Now →</span>
                     </button>
                   </AuthProtectedLink>
                 </div>

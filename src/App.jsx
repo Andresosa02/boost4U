@@ -20,13 +20,18 @@ import VendiendoCuentaslol from "./pages/Ventas/vendiendoCuentaslol.jsx";
 import VendiendoCuentasValorant from "./pages/Ventas/vendiendoCuentasValorant.jsx";
 import VendiendoCuentasFornite from "./pages/Ventas/vendiendoCuentasFornite.jsx";
 import Checkout from "./pages/checkout/checkout.jsx";
+import CheckoutValorant from "./pages/checkout/checkoutValorant.jsx";
+import CheckoutFornite from "./pages/checkout/checkoutFornite.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 import "./App.css";
 
 function AppInner() {
   const location = useLocation();
-  const hideHeader = location.pathname.startsWith("/checkout");
+  const hideHeader =
+    location.pathname.startsWith("/checkout") ||
+    location.pathname.startsWith("/checkoutValorant") ||
+    location.pathname.startsWith("/checkoutFornite");
 
   return (
     <>
@@ -64,6 +69,22 @@ function AppInner() {
           element={
             <ProtectedRoute>
               <Checkout />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkoutValorant/:id"
+          element={
+            <ProtectedRoute>
+              <CheckoutValorant />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkoutFornite/:id"
+          element={
+            <ProtectedRoute>
+              <CheckoutFornite />
             </ProtectedRoute>
           }
         />
